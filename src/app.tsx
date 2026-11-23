@@ -29,7 +29,7 @@ import {nextTheme, paletteFor, type ThemeName} from './theme.js';
 
 type Phase = 'bootstrap' | 'input' | 'probe' | 'picker' | 'download' | 'done' | 'error';
 
-const LOGO_WIDTH = 69;
+const LOGO_WIDTH = 53;
 const CONTENT_WIDTH = 72;
 
 /**
