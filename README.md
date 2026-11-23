@@ -28,6 +28,7 @@ se não houver, o pacote usa o `ffmpeg-static` como reserva.
 downtube <url>              # abre direto no seletor de formato
 downtube                    # pede a URL na tela inicial
 downtube --theme dark       # tema fixo: auto | light | dark
+downtube --dir ~/Videos      # salva em outra pasta
 downtube -h                 # ajuda
 downtube -v                 # versão
 ```
@@ -39,6 +40,11 @@ uma opção por resolução (até 8, da maior para a menor, em mp4) ou
 "áudio apenas · mp3". O download mostra barra de progresso com velocidade
 e ETA, indica a mesclagem e a extração de áudio, e salva o arquivo em
 `~/Downloads`, com o nome do título sanitizado (no máximo 60 caracteres).
+
+No celular (Termux), rode `termux-setup-storage` uma vez e libere o
+acesso: o downtube passa a salvar no Downloads do Android, e os vídeos
+aparecem no app Arquivos e na galeria. Para outra pasta, use
+`--dir <pasta>` (ex.: `downtube --dir ~/Videos <url>`).
 
 Atalhos:
 
@@ -123,7 +129,8 @@ docs/lacunas.md              relatório de lacunas (mapeamento da referência)
 ## Roadmap
 
 - [ ] Fila de downloads (várias URLs em sequência)
-- [ ] Escolha da pasta de destino e do nome do arquivo
+- [x] Escolha da pasta de destino (`--dir`; no Termux usa o Downloads do celular)
+- [ ] Escolha do nome do arquivo
 - [ ] Legendas (`.srt`) e miniatura junto com o vídeo
 - [ ] Atualização automática do yt-dlp (`downtube --update-yt-dlp`)
 - [ ] Playlist com escolha dos vídeos (hoje é `--no-playlist`)

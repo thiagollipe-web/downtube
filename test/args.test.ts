@@ -35,8 +35,17 @@ describe('parseArgs', () => {
 		assert.match(parseArgs(['https://a.test', 'https://b.test']).error ?? '', /Argumento extra/);
 	});
 
-	it('a ajuda menciona o uso e o aviso de uso responsável', () => {
-		assert.match(HELP_TEXT, /downtube <url>/);
-		assert.match(HELP_TEXT, /respeite os/);
+	it('aceita --dir com espaço e com =', () => {
+		assert.equal(parseArgs(['--dir', '/sdcard/Movies']).dir, '/sdcard/Movies');
+		assert.equal(parseArgs(['--dir=~/Videos']).dir, '~/Videos');
+	});
+
+	it('rejeita --dir sem pasta', () => {
+		assert.match(parseArgs(['--dir']).error ?? '', /Falta a pasta do --dir/);
+	});
+
+	it('a ajuda menciona o --dir e o Downloads do celular', () => {
+		assert.match(HELP_TEXT, /--dir <pasta>/);
+		assert.match(HELP_TEXT, /termux-setup-storage/);
 	});
 });

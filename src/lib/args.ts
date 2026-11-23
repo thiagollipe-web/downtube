@@ -3,6 +3,8 @@ export type ThemeName = 'auto' | 'light' | 'dark';
 export interface ParsedArgs {
 	url?: string;
 	theme: ThemeName;
+	/** Pasta de destino dos downloads (padrão: Downloads do sistema / do celular). */
+	dir?: string;
 	help: boolean;
 	version: boolean;
 	error?: string;
@@ -37,6 +39,16 @@ export function parseArgs(argv: string[]): ParsedArgs {
 			continue;
 		}
 
+		if (arg === '--dir' || arg.startsWith('--dir=')) {
+			const value = arg === '--dir' ? argv[++i] : arg.slice('--dir='.length);
+			if (value === undefined || value === '') {
+				result.error = `Falta a pasta do --dir. Exemplo: --dir ~/Downloads`;
+				return result;
+			}
+			result.dir = value;
+			continue;
+		}
+
 		if (arg.startsWith('-')) {
 			result.error = `Opção desconhecida: ${arg}. Use -h para ver a ajuda.`;
 			return result;
@@ -62,6 +74,7 @@ Uso:
 
 Opções:
   --theme auto|light|dark     Tema da interface (padrão: auto)
+  --dir <pasta>               Pasta de destino dos vídeos
   -h, --help                  Mostra esta ajuda
   -v, --version               Mostra a versão
 
@@ -70,7 +83,10 @@ Atalhos na interface:
   Esc     Cancela a operação atual
   Ctrl+T  Alterna o tema (auto → light → dark)
 
-Os vídeos são salvos em ~/Downloads. O download é feito pelo yt-dlp;
+Os vídeos são salvos em ~/Downloads. No celular (Termux), depois de rodar
+termux-setup-storage uma vez, eles vão para o Downloads do Android e
+aparecem no app Arquivos. Use --dir para escolher outra pasta.
+O download é feito pelo yt-dlp;
 o downtube não baixa conteúdo por conta própria nem envia telemetria.
 Baixe apenas conteúdo que você tem direito de guardar e respeite os
 termos das plataformas.`;

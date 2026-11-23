@@ -59,7 +59,7 @@ process.on('SIGTERM', () => {
 process.stdout.write('\x1b[?1049h\x1b[?25l');
 
 try {
-	const instance = render(<App initialUrl={args.url} initialTheme={args.theme} />, {exitOnCtrlC: false});
+	const instance = render(<App initialUrl={args.url} initialTheme={args.theme} outDir={args.dir} />, {exitOnCtrlC: false});
 	await instance.waitUntilExit();
 } catch (error) {
 	restoreOnce();

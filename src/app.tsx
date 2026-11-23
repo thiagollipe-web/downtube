@@ -13,7 +13,7 @@ import {readClipboardUrl} from './lib/clipboard.js';
 import {formatDuration, isValidUrl, sanitizeFilename} from './lib/format.js';
 import {addToHistory} from './lib/history.js';
 import {setLastDownloaded} from './lib/last-result.js';
-import {downloadsDir} from './lib/platforms.js';
+import {downloadsDir, resolveDownloadsDir} from './lib/platforms.js';
 import {useMouseClick} from './lib/use-mouse-click.js';
 import {
 	buildChoices,
@@ -70,12 +70,13 @@ const FOOTER_HINTS: Record<Phase, string> = {
 	error: 'Enter volta · Esc sai',
 };
 
-export function App({initialUrl, initialTheme}: {initialUrl?: string; initialTheme: ThemeName}): React.JSX.Element {
+export function App({initialUrl, initialTheme, outDir}: {initialUrl?: string; initialTheme: ThemeName; outDir?: string}): React.JSX.Element {
 	const {exit} = useApp();
 	const {stdout} = useStdout();
 	const [theme, setTheme] = useState<ThemeName>(initialTheme);
 	const [phase, setPhase] = useState<Phase>('bootstrap');
 	const [bootstrapNote, setBootstrapNote] = useState('Procurando o yt-dlp…');
+	const [outDirLabel, setOutDirLabel] = useState<string | null>(null);
 	const [url, setUrl] = useState('');
 	const [urlError, setUrlError] = useState<string | null>(null);
 	const [clipboardUrl, setClipboardUrl] = useState<string | null>(null);
@@ -90,6 +91,8 @@ export function App({initialUrl, initialTheme}: {initialUrl?: string; initialThe
 	const clickMap = useMemo(() => new ClickMap(), []);
 	const ytDlpRef = useRef<string | null>(null);
 	const ffmpegRef = useRef<string | undefined>(undefined);
+	const outDirRef = useRef<string | null>(null);
+	const outDirArgRef = useRef(outDir);
 	const initialUrlRef = useRef(initialUrl);
 	const probeAbortRef = useRef<AbortController | null>(null);
 	const downloadAbortRef = useRef<AbortController | null>(null);
@@ -140,6 +143,8 @@ export function App({initialUrl, initialTheme}: {initialUrl?: string; initialThe
 			});
 			ytDlpRef.current = bin;
 			ffmpegRef.current = await resolveFfmpeg();
+			outDirRef.current = await resolveDownloadsDir(outDirArgRef.current);
+			setOutDirLabel(outDirRef.current);
 			const firstUrl = initialUrlRef.current;
 			if (firstUrl && isValidUrl(firstUrl)) {
 				await startProbe(firstUrl.trim());
@@ -182,7 +187,7 @@ export function App({initialUrl, initialTheme}: {initialUrl?: string; initialThe
 			const bin = ytDlpRef.current;
 			const info = probeInfo;
 			if (!bin || !info) return;
-			const outDir = downloadsDir();
+			const outDir = outDirRef.current ?? downloadsDir();
 			const filename = sanitizeFilename(info.title);
 			setProgress({percent: 0, part: 1, totalParts: 1});
 			setDownloadPhase('download');
@@ -358,6 +363,7 @@ export function App({initialUrl, initialTheme}: {initialUrl?: string; initialThe
 					<Text color={palette.muted || undefined}>
 						{clipboardUrl ? `Tab cola: ${clipboardUrl}` : 'Enter confirma · Esc sai'}
 					</Text>
+					{outDirLabel ? <Text color={palette.muted || undefined}>Salvo em: {outDirLabel}</Text> : <Text> </Text>}
 					{urlError ? <Text color={palette.error || undefined}>{urlError}</Text> : <Text> </Text>}
 				</Box>
 			)}
