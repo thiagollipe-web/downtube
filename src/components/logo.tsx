@@ -1,13 +1,11 @@
 import {Box, Text} from 'ink';
 import type {Palette} from '../theme.js';
 
-/** Logo em ASCII puro, estilo terminal: só caracteres ASCII, 5 linhas. */
+/** Logo em ASCII puro, estilo terminal: só caracteres ASCII, 3 linhas. */
 const LOGO_LINES: string[] = [
-	' ___   ___  __     __  _   _  _____ |   | ____  _____',
-	'|  _\\ /   \\ \\ \\   / / | \\ | |   |   |   | |   \\ |',
-	'| | | | | |  \\ \\ / /  |  \\| |   |   |   | |___| |___',
-	'| |_| | |_|   \\   /   | |\\  |   |   |   | |   \\ |',
-	'|___/ \\___/    \\_/    |_| \\_|   |    \\_/  |___| |____',
+	' __   __  _   _   _   _ ___ _   _  __  ___',
+	'| _\\ /  \\ \\ \\ / / | \\ |  |  |   | |__\\ |__',
+	'|__/ \\__/  \\_/    |_\\_| _|_ \\_ _/ |__/ |___|',
 ];
 
 export function Logo({palette}: {palette: Palette}): React.JSX.Element {

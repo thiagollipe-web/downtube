@@ -22,11 +22,9 @@ Não usa imagem, marca ou asset de nenhum outro projeto.
 ## Arte ASCII (a mesma do terminal, em `src/components/logo.tsx`)
 
 ```text
- ___   ___  __     __  _   _  _____ |   | ____  _____
-|  _\ /   \ \ \   / / | \ | |   |   |   | |   \ |
-| | | | | |  \ \ / /  |  \| |   |   |   | |___| |___
-| |_| | |_|   \   /   | |\  |   |   |   | |   \ |
-|___/ \___/    \_/    |_| \_|   |    \_/  |___| |____
+ __   __  _   _   _   _ ___ _   _  __  ___
+| _\ /  \ \ \ / / | \ |  |  |   | |__\ |__
+|__/ \__/  \_/    |_\_| _|_ \_ _/ |__/ |___|
 ```
 
 O PNG foi gerado a partir dessa mesma arte, com a fonte DejaVu Sans Mono

@@ -29,26 +29,26 @@ import {nextTheme, paletteFor, type ThemeName} from './theme.js';
 
 type Phase = 'bootstrap' | 'input' | 'probe' | 'picker' | 'download' | 'done' | 'error';
 
-const LOGO_WIDTH = 53;
+const LOGO_WIDTH = 43;
 const CONTENT_WIDTH = 72;
 
 /**
  * Layout em linhas fixas, centralizado na tela, para o mapa de cliques
- * saber onde cada item está: logo ASCII (5) + branco (1) + painel (2) +
- * branco (1) = conteúdo 9 linhas abaixo do topo da área centralizada.
+ * saber onde cada item está: logo ASCII (3) + branco (1) + painel (2) +
+ * branco (1) = conteúdo 7 linhas abaixo do topo da área centralizada.
  * O seletor tem o rótulo nessa linha e os itens a partir da próxima.
  */
 function totalHeight(phase: Phase, choiceCount: number): number {
 	switch (phase) {
 		case 'picker':
-			return 13 + choiceCount;
+			return 11 + choiceCount;
 		case 'input':
 		case 'download':
-			return 14;
-		case 'error':
-			return 13;
-		default:
 			return 12;
+		case 'error':
+			return 11;
+		default:
+			return 10;
 	}
 }
 
@@ -105,8 +105,8 @@ export function App({initialUrl, initialTheme, outDir}: {initialUrl?: string; in
 	const height = totalHeight(phase, choices.length);
 	const topPad = Math.max(0, Math.floor((rows - height) / 2));
 	const marginLeft = Math.max(0, Math.floor((cols - CONTENT_WIDTH) / 2));
-	const contentStart = topPad + 9;
-	const pickerItemsStart = topPad + 10;
+	const contentStart = topPad + 7;
+	const pickerItemsStart = topPad + 8;
 	const footerY = topPad + height - 1;
 
 	const startProbe = useCallback(async (targetUrl: string) => {
@@ -244,7 +244,7 @@ export function App({initialUrl, initialTheme, outDir}: {initialUrl?: string; in
 			x: marginLeft,
 			y: topPad,
 			width: LOGO_WIDTH,
-			height: 5,
+			height: 3,
 			onClick: () => {
 				if (phase === 'download' || phase === 'bootstrap') return;
 				if (phase === 'probe') probeAbortRef.current?.abort();
